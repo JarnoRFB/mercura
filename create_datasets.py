@@ -1,11 +1,9 @@
-
-# coding: utf-8
-
-# In[11]:
-
 import numpy as np
 import pandas as pd
 import pickle as pk
+
+from sklearn.model_selection import train_test_split as split_data
+
 
 class SymptomDiseaseData:
     def __init__(self):
@@ -22,11 +20,14 @@ class SymptomDiseaseData:
         self.weekly_diseases = self.weekly_diseases.drop(columns='Kalenderwoche')
         self.weekly_diseases = self.weekly_diseases.loc[:, ('Influenza', 'Windpocken', 'Norovirus-Gastroenteritis')]
 
-    def generate_data(self):
+    def generate_data(self, split=True):
         """
-        Puts symptoms and diseases in numpy arrays
+        Puts symptoms and diseases in numpy arrays, splits into train, val, and test sets, or just returns all data
+        if you want.
+        Args:
+            split: if data should be split into training/test etc
         Returns:
-            weekly_symptoms, weekly_diseases-->numpy arrays
+            train, val, test, train_label, val_label, test_label
         """
         for year in range(2001,2019):
             for week in range(1, 53):
@@ -52,7 +53,23 @@ class SymptomDiseaseData:
 
         self.symptoms_data = np.asarray(self.symptoms_data)
         self.disease_data = np.asarray(self.disease_data)
-        return self.symptoms_data, self.disease_data
+        if split:
+            self._split()
+            return self.train, self.valid, self.test, self.train_labels, self.valid_labels, self.test_labels
+        else:
+            return self.symptoms_data, self.disease_data
+
+    def _split(self):
+        """
+        Splits data and labels into training, validation, and test sets.
+        """
+        self.train, valtest, self.train_labels, valtest_labels = split_data(self.symptoms_data, self.disease_data,
+                                                                                   shuffle=True, train_size=.7,
+                                                                                   test_size=.3)
+        self.valid, self.test, self.valid_labels, self.test_labels = split_data(valtest, valtest_labels,
+                                                                                              shuffle=True,
+                                                                                              train_size=.5,
+                                                                                              test_size=.5)
 
     def get_data_insight(self):
         """
