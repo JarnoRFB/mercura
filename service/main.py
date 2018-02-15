@@ -22,7 +22,7 @@ from flask import make_response
 
 app = Flask(__name__)
 
-response_db = {
+info_response_db = {
     'prevention.information':
          {
         'Influenza': 'Influenza-Viren übertragen sich durch Tröpfcheninfektion und sind dadurch extrem ansteckend. Halten Sie sich von erkrankten Personen fern und waschen sie sich oft die Hände. Es gibt auch Impfmöglichkeiten.',
@@ -66,29 +66,29 @@ response_db = {
         {
         'Influenza': 'Sind sie sich unsicher ob sie vielleicht die Grippe haben?',
         'Noro-Gastroenteritis': 
-            '''''',
-         'Windpocken': ''
+            '''Sind Sie sich unsicher ob Sie vielleicht eine Magen-Darm-Infektion haben?''',
+         'Windpocken': 'Nach einer kurzen Phase des Krankheitsgefühls  mit leichtem Fieber entstehen bei einer Windpocken-Infektion die typischen roten Papeln, die sich über den ganzen Körper ausbreiten. Diese Papeln werden zu Flüssigkeitsgefüllten Bläschen, die man nicht aufkratzen sollte.'
         },   
-    'symptom.information.influenza':
+    'symptom.information.followup':
         {
         'Influenza': 'Von einer normalen Erkältung, die man auch grippalen Infekt nennt, unterscheidet sich die "echte" Grippe, die sogenannte Influenza, besonders durch ihren plötzlichen Beginn. Möchten Sie mehr erfahren?',
         'Noro-Gastroenteritis': 
-            '''''',
+            '''Obwohl eine eine Noro-Virus-Infektion auch mit Grippe-ähnlichen Symptomen wie Frösteln, Schwitzen und Magenkrämpfen beginnt, erkennt man sie deutlich an dem plötzlich einsetzenden Durchfall und dem explosionsartigem Erbrechen. Möchten Sie mehr wissen?''',
          'Windpocken': ''
         },   
     'symptom.information.influenza.more':
         {
         'Influenza': 'Bei einem grippalen Infekt, kündigen sich erste Symptome, wie Schnupfen, Halsschmerzen und gelegentliche Kopfschmerzen oft schon früh an. Eine Influenza beginnt jedoch mit plötzlichem Fieber, Schwächegefühl und Kopf- und Gliederschmerzen. Kann ich dir noch irgendwie helfen?',
         'Noro-Gastroenteritis': 
-            '''''',
+            '''Eine Noro-Virus-Infektion hat sehr ähnliche Symptome zu einer Rota-Virus-Infektion oder einer bakteriellen Infektion durch z.B. Salmonellen. Haben Sie die beschriebenen Symptome für mehr als drei Tage, oder gehören Sie zu einer Risikogruppe, sollten Sie zum Arzt gehen und den Auslöser überprüfen lassen.''',
          'Windpocken': ''
         }, 
     'symptom.information.with.context':
         {
-        'Influenza': 'Sind sie sich unsicher ob sie vielleicht die Grippe haben?',
+        'Influenza': 'Sind Sie sich unsicher ob Sie vielleicht die Grippe haben?',
         'Noro-Gastroenteritis': 
-            '''''',
-         'Windpocken': ''
+            '''Sind Sie sich unsicher ob Sie vielleicht eine Magen-Darm-Infektion haben?''',
+         'Windpocken': 'Nach einer kurzen Phase des Krankheitsgefühls  mit leichtem Fieber entstehen bei einer Windpocken-Infektion die typischen roten Papeln, die sich über den ganzen Körper ausbreiten. Diese Papeln werden zu Flüssigkeitsgefüllten Bläschen, die man nicht aufkratzen sollte.'
         },   
     'duration':
         {
@@ -124,34 +124,44 @@ response_db = {
         'Influenza': 'Wenn die Krankheitszeichen plötzlich einsetzen und das Allgemeinbefinden schwer beeinträchtigen, ist es ratsam direkt eine Ärztin oder einen Arzt aufzusuchen. Besonders bei anhaltend hohem Fieber sollte spätestens ab dem dritten Erkrankungstag eine Arztpraxis aufgesucht werden.',
         'Noro-Gastroenteritis': 
             '''Wenn starke Kreislaufprobleme auftreten oder Muskelkrämpfe, Schläfrigkeit oder Verwirrtheit sowie hohes Fieber, sollte in jedem Fall eine Ärztin oder Arzt zu Rate gezogen werden. Das gleiche gilt für den Fall, dass Blut im Stuhl auftritt oder dass der Brechdurchfall länger als drei Tage anhält.''',
-         'Windpocken': ''
+         'Windpocken': 'Wenn Sie Schwellungen oder Eiterung bemerken, ist dies ein Zeichen für eine zusätzliche bakterielle Entzündung. Das sollten sie vom Arzt behandeln lassen. Sie sollten ausßerdem sofort zum Arzt wenn Ihnen ein steifer Nacken, Krämpfe oder Gleichgewichtsstörungen auffallen.'
         },  
     'go.to.doctor.with.context':
         {
         'Influenza': 'Wenn die Krankheitszeichen plötzlich einsetzen und das Allgemeinbefinden schwer beeinträchtigen, ist es ratsam direkt eine Ärztin oder einen Arzt aufzusuchen. Besonders bei anhaltend hohem Fieber sollte spätestens ab dem dritten Erkrankungstag eine Arztpraxis aufgesucht werden.',
         'Noro-Gastroenteritis': 
             '''Wenn starke Kreislaufprobleme auftreten oder Muskelkrämpfe, Schläfrigkeit oder Verwirrtheit sowie hohes Fieber, sollte in jedem Fall eine Ärztin oder Arzt zu Rate gezogen werden. Das gleiche gilt für den Fall, dass Blut im Stuhl auftritt oder dass der Brechdurchfall länger als drei Tage anhält.''',
-         'Windpocken': ''
+         'Windpocken': 'Wenn Sie Schwellungen oder Eiterung bemerken, ist dies ein Zeichen für eine zusätzliche bakterielle Entzündung. Das sollten sie vom Arzt behandeln lassen. Sie sollten ausßerdem sofort zum Arzt wenn Ihnen ein steifer Nacken, Krämpfe oder Gleichgewichtsstörungen auffallen.'
         },  
     'vaccination.information':
         {
-        'Influenza': '',
+        'Influenza': 'Gegen den Influenza-Virus kann man sich impfen lassen, muss dies jedoch jedes Jahr erneut machen. Möchten Sie wissen ob Sie sich impfen lassen sollten?',
         'Noro-Gastroenteritis': 
             '''''',
-         'Windpocken': ''
+         'Windpocken': 'Ja man kann sich gegen die Windpocken impfen lassen. Es wird bei Kindern zu einer ersten Impfung im Alter von 11 bis 14 Monaten und zu einer zweiten im Alter von 15 bis 23 Monaten geraten. Man kann die Impfung nach Kontakt mit einer an Windpocken erkrankten Person innerhalb von fünf Tagen nachholen.'
         },  
     'vaccination.information.with.context':
         {
-        'Influenza': '',
+        'Influenza': 'Gegen den Influenza-Virus kann man sich impfen lassen, muss dies jedoch jedes Jahr erneut machen. Möchten Sie wissen ob Sie sich impfen lassen sollten?',
         'Noro-Gastroenteritis': 
             '''''',
+         'Windpocken': 'Ja man kann sich gegen die Windpocken impfen lassen. Es wird bei Kindern zu einer ersten Impfung im Alter von 11 bis 14 Monaten und zu einer zweiten im Alter von 15 bis 23 Monaten geraten. Man kann die Impfung nach Kontakt mit einer an Windpocken erkrankten Person innerhalb von fünf Tagen nachholen.'
+        },  
+    'vaccination.information.yes':
+        {
+        'Influenza': 'Das Robert-Koch-Institut empfiehlt allen Menschen über 60 Jahren und Personen mit chronischen Krankheiten eine Impfung gegen die Grippe, weil sie besonders gefährdet sind. Zusätlich sollten sich alle, die im Beruf viel mit diesen Risikogruppen zu tun haben, impfen lassen.',
+        'Noro-Gastroenteritis': 
+            '''Gegen den Noro-Virus gibt es leider keine Impfung. Gegen den Rota-Virus, der ähnliche Symptome auslöst, jedoch schon.''',
          'Windpocken': ''
         },  
-
 
     'default': 'Tut mir leid, darauf kann ich nicht antworten'
 } 
 
+report_response_db = {
+    'report.symptom': 'Vielen Dank für diese Information. Haben Sie noch andere Auffälligkeiten zu berichten?'
+
+}
 
 
 
@@ -191,13 +201,12 @@ def make_webhook_result(request):
     print('contexts')
     print(contexts)
 
-
-    if action == 'prevention.information':
-        fulfillment_text = response_db.get(action).get(parameters.get('disease'))
-    elif action == 'prevention.information.schmierinfektion3':
-        fulfillment_text = response_db.get(action).get(parameters.get('disease'))
+    if action in info_response_db.keys():
+        fulfillment_text = info_response_db.get(action).get(parameters.get('disease'))
+    elif action in report_response_db.keys():
+        fulfillment_text = report_response_db.get(action)
     else:
-        fulfillment_text = response_db['default']
+        fulfillment_text = info_response_db['default']
 
     return {
         "fulfillmentText": fulfillment_text,
