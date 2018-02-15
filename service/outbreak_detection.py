@@ -63,7 +63,7 @@ disease_regressor = DiseaseRegressor(pickle.load(open('random_forest_18.pkl', 'r
 # handpicked:
 # thresholds = {'Influenza': 853, 'Windpocken': 178, 'Norovirus-Gastroenteritis': 1800}
 # toy
-thresholds = {'Influenza': 20, 'Windpocken': 10, 'Norovirus-Gastroenteritis': 20}
+thresholds = {'Influenza': 20, 'Windpocken': 10, 'Norovirus-Gastroenteritis': 50}
 
 outbreak_detector = ThresholdOutbreakDetector(thresholds)
 
