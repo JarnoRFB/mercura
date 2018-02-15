@@ -2,3 +2,5 @@ Flask
 gunicorn
 Flask-SQLAlchemy
 psycopg2
+scipy
+scikit-learn
