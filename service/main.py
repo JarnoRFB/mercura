@@ -6,7 +6,7 @@ import json
 
 from flask import Flask, jsonify
 from flask import request
-from flask import make_response
+from flask import make_response, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 from outbreak_detection import outbreak_detector, disease_regressor
@@ -42,6 +42,9 @@ def server_error(e):
     See logs for full stacktrace.
     """.format(e), 500
 
+@app.route('/bot')
+def bot():
+    return redirect("https://bot.dialogflow.com/ee501930-f67e-4cfd-b812-5145f632b1e1", code=302)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
