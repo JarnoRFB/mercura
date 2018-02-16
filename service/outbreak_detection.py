@@ -12,7 +12,7 @@ class DiseaseRegressor:
         """
         Given the current distribution of symptoms, this method returns the estimated distribution of diseases.
         """
-
+        print(symptoms_data)
         key_list = list(symptoms_data['symptoms'].keys())
         print('key_list', key_list)
         key_list.sort()
@@ -20,7 +20,7 @@ class DiseaseRegressor:
         for i, key in enumerate(key_list):
             data[i] = symptoms_data['symptoms'][key]
         data = data.reshape(1, -1)
-        print("This is the data put into the model: " + str(data) + " " + str(type(data)) + " " + str(data.shape))
+        # print("This is the data put into the model: " + str(data) + " " + str(type(data)) + " " + str(data.shape))
         prediction = self._model.predict(data)
         prediction_dict = {
             'Influenza': prediction[0][0],
@@ -62,20 +62,9 @@ disease_regressor = DiseaseRegressor(pickle.load(open('random_forest_18.pkl', 'r
 # mean thresholds = {'Influenza': 853, 'Windpocken': 178, 'Norovirus-Gastroenteritis': 2219}
 # handpicked:
 # thresholds = {'Influenza': 853, 'Windpocken': 178, 'Norovirus-Gastroenteritis': 1800}
-# toy
-thresholds = {'Influenza': 20, 'Windpocken': 10, 'Norovirus-Gastroenteritis': 50}
+# toy examples
+thresholds = {'Influenza': 30, 'Windpocken': 10, 'Norovirus-Gastroenteritis': 300}
 
 outbreak_detector = ThresholdOutbreakDetector(thresholds)
 
 
-# @app.route('/predict', methods=['POST'])
-# def give_prediction():
-#     data_json = request.json
-#     return jsonify(predict(data_json))
-#
-#
-# @app.route('/evaluate', methods=['POST'])
-# def evaluate():
-#     data_json = request.json
-#     data = predict(data_json)
-#     return jsonify(threshold_report(data))

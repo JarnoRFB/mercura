@@ -73,6 +73,14 @@ def make_webhook_result(request):
 
         fulfillment_text += report_response_db['report.symptom.closing'].format(disease)
 
+    elif action == 'epidemics.information':
+        outbreak_report = check_for_outbreak()
+        fulfillment_text = ''
+        for disease, outbreak in outbreak_report.items():
+            if outbreak:
+                fulfillment_text += info_response_db['epidemics.information.epidemic'].format(disease)
+        if not fulfillment_text:
+            fulfillment_text = info_response_db['epidemics.information.ok']
 
     else:
         fulfillment_text = info_response_db['default']
@@ -131,22 +139,22 @@ def get_symptom_observation_from_last_week():
 
 def format_observations_as_dict(observations):
     observation_dict = {
-        'Ausschlag an Haut oder Schleimhaut mit Flecken, Bläschen oder Pusteln (außer Herpes zoster)': 0,
-        'Ausschlag an Haut oder Schleimhaut mit gleichzeitig vorhandenen Papeln, Bläschen bzw. Pusteln und Schorf (sog. Sternenhimmel)': 0,
+        'Ausschlag an Haut oder Schleimhaut mit Flecken, Bläschen oder Pusteln außer Herpes zoster': 0,
+        'Ausschlag an Haut oder Schleimhaut mit gleichzeitig vorhandenen Papeln, Bläschen bzw. Pusteln und Schorf sog. Sternenhimmel': 0,
         'Ausschlag, einseitig auf Hautsegment beschränkt, bläschenförmig': 0,
         'Brennen, Juckreiz': 0,
         'Durchfall und/oder Erbrechen': 0,
         'Durchfall, nicht näher bezeichnet': 0,
-        'Fetales (kongenitales) Varizellensyndrom': 0,
+        'Fetales kongenitales Varizellensyndrom': 0,
         'Fieber': 0,
         'Gliederschmerzen': 0,
         'Husten': 0,
         'Muskel-, Glieder-, Rücken- oder Kopfschmerzen': 0,
-        'Pneumonie (Lungenentzündung)': 0,
-        'Schmerzen im betroffenen Bereich (Zosterneuralgie)': 0,
+        'Pneumonie Lungenentzündung': 0,
+        'Schmerzen im betroffenen Bereich Zosterneuralgie': 0,
         'Schmerzen, einseitig auf ein Hautsegment lokalisiert, ohne Ausschlag': 0,
         'akuter Krankheitsbeginn': 0,
-        'akutes schweres Atemnotsyndrom (ARDS)': 0,
+        'akutes schweres Atemnotsyndrom ARDS': 0,
         'andere Symptome': 0,
         'beatmungspflichtige Atemwegserkrankung': 0}
 
@@ -159,6 +167,13 @@ def format_observations_as_dict(observations):
 @app.route('/predict')
 def predict():
     disease_prediction = get_prediction()
+
+    return jsonify(disease_prediction), 200, {'Content-Type': 'text/plain; charset=utf-8'}
+
+@app.route('/predict_from_symptoms', methods=['POST'])
+def predict_from_symptoms():
+    req = request.get_json(silent=True, force=True)
+    disease_prediction = disease_regressor.predict(req)
 
     return jsonify(disease_prediction), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
