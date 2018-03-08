@@ -3,6 +3,7 @@ import os
 import sqlalchemy
 import logging
 import json
+import time
 
 from flask import Flask, jsonify
 from flask import request
@@ -12,11 +13,26 @@ from flask_sqlalchemy import SQLAlchemy
 from outbreak_detection import outbreak_detector, disease_regressor
 from response_db import *
 
-app = Flask(__name__)
 
-# Environment variables are defined in app.yaml.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
+DBUSER = 'marco'
+DBPASS = 'foobarbaz'
+DBHOST = 'database'
+DBPORT = '5432'
+DBNAME = 'testdb'
+
+
+app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    'postgresql+psycopg2://{user}:{passwd}@{host}:{port}/{db}'.format(
+        user=DBUSER,
+        passwd=DBPASS,
+        host=DBHOST,
+        port=DBPORT,
+        db=DBNAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = 'foobarbaz'
+
 
 db = SQLAlchemy(app)
 
@@ -31,7 +47,7 @@ class SymptomObservation(db.Model):
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
-    return 'Hello Appengine!'
+    return 'Hello Docker!'
 
 
 @app.errorhandler(500)
@@ -193,6 +209,15 @@ def delete():
 
 
 if __name__ == '__main__':
-    # This is used when running locally. Gunicorn is used to run the
-    # application on Google App Engine. See entrypoint in app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
+
+    dbstatus = False
+    while dbstatus == False:
+        try:
+            db.create_all()
+        except:
+            time.sleep(2)
+        else:
+            dbstatus = True
+    app.run(debug=True, host='0.0.0.0')
+
+    #app.run(host='127.0.0.1', port=8080, debug=True)
