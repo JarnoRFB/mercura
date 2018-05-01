@@ -43,6 +43,17 @@ class SymptomObservation(db.Model):
     symptom = db.Column(db.String(146))
     occurrences = db.Column(db.Integer)
 
+# Make sure database tables are created.
+# TODO: This not very clean.
+dbstatus = False
+while not dbstatus:
+    try:
+        db.create_all()
+    except:
+        time.sleep(2)
+    else:
+        dbstatus = True
+
 
 @app.route('/')
 def hello():
@@ -219,4 +230,3 @@ if __name__ == '__main__':
         else:
             dbstatus = True
     app.run(debug=True, host='0.0.0.0')
-
