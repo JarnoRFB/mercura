@@ -15,7 +15,6 @@ WORKDIR /
 ADD ./ /home/app/
 WORKDIR /home/app/
 
-
 EXPOSE 5000
 
-ENTRYPOINT ["python3", "app.py"]
+ENTRYPOINT ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]

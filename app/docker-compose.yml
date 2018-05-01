@@ -1,16 +1,17 @@
-version: '3'
+version: "3"
 services:
-  flaskapp:
+  web:
     build: .
     ports:
-      - "5000:5000"
+      - "80:5000"
     volumes:
       - ./:/home/app/
     depends_on:
       - database
-    # restart_policy:
-    #     condition: on-failure
-    # restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
   database:
     image: postgres:10
     env_file: .env
