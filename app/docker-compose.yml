@@ -1,0 +1,19 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "80:5000"
+    volumes:
+      - ./:/home/app/
+    depends_on:
+      - database
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+  database:
+    image: postgres:10
+    env_file: .env
+    expose:
+      - 5432
