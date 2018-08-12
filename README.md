@@ -1,7 +1,13 @@
 # Mercura
 ## The Epidemiological Assistent
+Mercura is an interactive chatbot that allows doctors to 
+quickly report irregularities within their group of patients.
+This way enabling faster detection of disease outbreaks.
 
+The mercura prototype was developed during the [hack4health 2018](https://www.hack4health.de/) in Osnabrück. It is developed 
+with Python and DialogFlow.
 
+## Demo
 Check
 https://bot.dialogflow.com/ee501930-f67e-4cfd-b812-5145f632b1e1
 for an interactive demo.
@@ -10,6 +16,7 @@ for an interactive demo.
 1. Install [Docker Engine](https://docs.docker.com/install/).
 1. Install [Docker Compose](https://docs.docker.com/compose/install/).
 1. Register for and install [ngrok](https://ngrok.com/).
+1. `$ cd app`
 1. Run: `$ docker-compose up`
 This might take a while when building the
   containers for the first time.
